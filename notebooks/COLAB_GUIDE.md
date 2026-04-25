@@ -26,8 +26,8 @@ from google.colab import drive
 drive.mount('/content/drive')
 
 # Or clone from GitHub
-!git clone https://github.com/AniketAwchare/iitp_project_mk1.git
-%cd iitp_project_mk1
+!git clone https://github.com/<your-username>/llm-observability-framework.git
+%cd llm-observability-framework
 !pip install -r requirements.txt
 ```
 

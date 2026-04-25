@@ -81,8 +81,8 @@ Open the notebooks in `notebooks/` — each is self-contained with `!pip install
 
 ```bash
 # 1. Clone
-git clone https://github.com/AniketAwchare/iitp_project_mk1.git
-cd iitp_project_mk1
+git clone https://github.com/<your-username>/llm-observability-framework.git
+cd llm-observability-framework
 
 # 2. Install (CPU-only is fine for experiments 1–3)
 pip install -r requirements.txt
@@ -166,5 +166,4 @@ python run_experiments.py
 Awchare, A. (2026). A Framework for Observability and Reliability in Production 
 Large Language Model Systems. M.Tech Thesis, IIT Patna.
 Supervisor: Sachin Rathore, Cloud Software Group.
-GitHub: https://github.com/AniketAwchare/iitp_project_mk1
 ```
