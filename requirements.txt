@@ -1,0 +1,47 @@
+# ── Core ML ──────────────────────────────────────────────────────────
+transformers==4.40.0
+bitsandbytes==0.43.0
+accelerate==0.29.3
+torch==2.2.2
+sentence-transformers==2.7.0
+
+# ── RAG ──────────────────────────────────────────────────────────────
+langchain==0.1.20
+langchain-community==0.0.38
+faiss-cpu==1.8.0
+
+# ── Evaluation metrics ───────────────────────────────────────────────
+ragas==0.1.9
+evaluate==0.4.1
+bert-score==0.3.13
+rouge-score==0.1.2
+nltk==3.8.1
+
+# ── Drift & Anomaly detection ─────────────────────────────────────────
+scipy==1.13.0
+scikit-learn==1.4.2
+umap-learn==0.5.6
+
+# ── Serving ──────────────────────────────────────────────────────────
+fastapi==0.111.0
+uvicorn[standard]==0.29.0
+pydantic==2.7.1
+httpx==0.27.0
+
+# ── Dashboard ────────────────────────────────────────────────────────
+streamlit==1.33.0
+plotly==5.21.0
+pandas==2.2.2
+
+# ── Experiment tracking ───────────────────────────────────────────────
+mlflow==2.13.0
+
+# ── Data ─────────────────────────────────────────────────────────────
+datasets==2.19.0
+huggingface-hub==0.22.2
+
+# ── Utilities ────────────────────────────────────────────────────────
+python-dotenv==1.0.1
+tqdm==4.66.4
+numpy==1.26.4
+loguru==0.7.2

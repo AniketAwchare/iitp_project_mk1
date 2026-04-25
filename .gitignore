@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Jupyter / Colab checkpoints
+.ipynb_checkpoints/
+
+# ML artefacts (large, regenerated at runtime)
+*.bin
+*.safetensors
+*.gguf
+*.ggml
+data/financial_corpus/faiss_index/
+
+# Logs & results (generated; commit selectively)
+logs/
+mlruns/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Secrets
+.env
+*.pem
