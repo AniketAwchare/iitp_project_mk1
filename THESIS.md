@@ -346,6 +346,9 @@ The current implementation utilizes Streamlit, a Python-based frontend framework
 *   **Time-Series Tracking:** Historical line charts pulled from MLflow showing the trajectory of metrics over the last hour/day, crucial for spotting gradual degradation.
 *   **Alert Feed:** A chronological log of all critical flags (e.g., "🔴 ANOMALY DETECTED" or "⚠️ RAG ALIGNMENT DEGRADED").
 *   **Human-in-the-Loop Review:** An interactive table allowing operators to browse the raw query logs, inspect the retrieved chunks, read the LLM response, and review the exact metric scores that led to a flag, complete with CSV export capabilities for offline compliance auditing.
+
+![Streamlit Dashboard Real-time Monitoring Interface](assets/01_dashboard.png)
+*Figure 4.1: The primary real-time monitoring interface of the observability dashboard. It provides live telemetry across the four evaluation modules, utilizing intuitive gauges and threshold alerts to summarize system health instantly.*
 ## CHAPTER 5: EXPERIMENTAL SETUP AND RESULTS
 
 To rigorously validate the proposed observability framework, a series of controlled, synthetic experiments were conducted. Unlike static offline benchmarking, these experiments simulated the dynamic nature of a live production environment by streaming queries sequentially and injecting controlled failure conditions at specific intervals.
@@ -385,6 +388,18 @@ The framework successfully detected the distribution shift across all three cond
 
 At a severe 90% shift, the detection was rapid and highly accurate, achieving an F1 score of 0.88. The detection latency—the number of queries processed after the shift began before the alert fired—was extremely low. However, at a subtle 10% shift, the statistical test struggled to distinguish the injected queries from the natural variance of the baseline, leading to delayed detection and degraded precision. Crucially, the Bonferroni-corrected KS test successfully minimized false positives during the pure baseline phase, ensuring operators are not overwhelmed by alert fatigue during stable operation.
 
+![Domain Shift Detection Performance Metrics and Latency](assets/02_exp1_overview.png)
+*Figure 5.1: Performance metrics (Precision, Recall, F1) and detection latency across different out-of-domain injection rates. As the injection rate increases, detection speed and accuracy improve significantly.*
+
+![Rolling Drift Magnitude over time at 10% injection rate](assets/03_exp1_10pct.png)
+*Figure 5.2: Drift Magnitude over time at a 10% injection rate. The signal is noisy but eventually establishes an upward trajectory.*
+
+![Rolling Drift Magnitude over time at 50% injection rate](assets/04_exp1_50pct.png)
+*Figure 5.3: Drift Magnitude over time at a 50% injection rate. The separation from the baseline becomes much clearer and faster.*
+
+![Rolling Drift Magnitude over time at 90% injection rate](assets/05_exp1_90pct.png)
+*Figure 5.4: Drift Magnitude over time at a 90% injection rate. This demonstrates a rapid, sharp, and undeniable increase in the KS statistic, triggering immediate alerts.*
+
 ### 5.3 Experiment 2: Adversarial Prompt Detection
 
 **Objective:**
@@ -405,6 +420,12 @@ The security module proved highly resilient, meeting all target criteria.
 *Table 2: Adversarial Detection Performance Metrics*
 
 The system achieved robust F1 scores across all scenarios. Most importantly for a production gateway, the False Positive Rate (FPR)—the rate at which benign user queries were incorrectly flagged and potentially blocked—remained strictly below the operational target threshold of 15%, averaging 8.4% overall. The ablation analysis revealed that while the unsupervised Isolation Forest effectively caught structurally unusual prompts, the heuristic rule-matching was critical for catching concise, grammatically standard injection commands (e.g., "system prompt:").
+
+![Adversarial Prompt Detection Performance and False Positive Rate](assets/06_exp2_overview.png)
+*Figure 5.5: Detection performance and False Positive Rates across different adversarial prompt injection frequencies. The system reliably maintains the FPR below the strict 15% threshold.*
+
+![Confusion Matrix for 10% adversarial injection rate](assets/07_exp2_confusion.png)
+*Figure 5.6: Confusion matrix detailing the exact counts of True Positives, False Positives, True Negatives, and False Negatives at a 10% injection rate.*
 
 ### 5.4 Experiment 3: RAG Alignment Failure Analysis
 
@@ -431,6 +452,12 @@ The Alignment Scorer clearly separated the three conditions.
 The metric accurately flagged 100% of the severe "Irrelevant" failures, causing a massive drop in the mean alignment score. The "Stale" condition was more challenging to detect because the vocabulary (financial terms) heavily overlapped with the query, keeping cosine similarity high, but the system still successfully flagged 80% of these subtle failures via the token-utilization and faithfulness penalties.
 
 To independently validate the proxy metric, the Alignment Scores were plotted against a ground-truth response quality metric (BERTScore computed against the known human reference answers). The analysis revealed a strong positive Pearson correlation coefficient ($r = 0.68$). This statistically significant correlation proves that as the computationally cheap Alignment Score drops, the actual factual quality of the generated response is deteriorating, confirming its utility as a leading indicator of hallucination in production.
+
+![RAG Alignment Failure Detection - Alignment Score Distribution](assets/08_exp3_overview.png)
+*Figure 5.7: Box plot distribution showing clear separation of Alignment Scores between Healthy, Irrelevant, and Stale RAG retrieval conditions. Irrelevant chunks are caught with 100% certainty.*
+
+![Detailed RAG Alignment Sub-metrics](assets/09_exp3_details.png)
+*Figure 5.8: Granular view of the RAG pipeline telemetry, displaying the individual Faithfulness, Retrieval Relevance, and Context Utilization sub-scores that compose the final Alignment metric.*
 
 ---
 <div style="page-break-after: always;"></div>
